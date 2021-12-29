@@ -3,7 +3,6 @@ import { getCustomRepository } from 'typeorm';
 import { EmployeeRepository } from '..';
 
 export class EmployeeController {
-  // private readonly repository: EmployeeRepository;
   public async getAllUsers(_: Request, response: Response) {
     const repository = getCustomRepository(EmployeeRepository);
     return repository.find()

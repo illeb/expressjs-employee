@@ -12,13 +12,7 @@ export class EmployeeRoutes implements IApplicationRoute {
     }
     
     addRoutes(): Application {
-        this.app.route(`/employees`).get(this.employeeController.getAllUsers);
-        //     (req: Request, res: Response) => {
-        //     this.employeeController.getAllUsers(req, res);
-        //     // const employees = db.getQuiz(+req.params.categoryId);
-        //     res.status(200).send([]);
-        // })
-        
+        this.app.route(`/employees`).get(this.employeeController.getAllUsers);        
         return this.app;
     }
 }

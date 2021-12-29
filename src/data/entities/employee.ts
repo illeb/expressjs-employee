@@ -4,27 +4,27 @@ import { Column, Entity, EntityRepository, PrimaryGeneratedColumn, Repository } 
 export class Employee {
   
   @PrimaryGeneratedColumn()
-  private id = -1;
+  public id = -1;
   
   @Column()
-  private firstName: string;
+  public firstName: string;
 
   @Column()
-  private lastName: string;
+  public lastName: string;
 
   @Column({
     nullable: true
   })
-  private birthDate?: Date;
+  public birthDate?: Date;
 
   @Column({
     nullable: true
   })
-  private hireDate?: Date;
+  public hireDate?: Date;
 
 }
 
-@EntityRepository()
+@EntityRepository(Employee)
 export class EmployeeRepository extends Repository<Employee> {
   findByName(firstName: string, lastName: string) {
     return this.createQueryBuilder("employee")
