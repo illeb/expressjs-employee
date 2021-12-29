@@ -1,1 +1,6 @@
-export * from './entities/employee';
+import { Employee, EmployeeRepository } from "./entities/employee";
+
+export {
+  Employee,
+  EmployeeRepository
+};
