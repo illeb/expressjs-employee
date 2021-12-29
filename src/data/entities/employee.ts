@@ -12,11 +12,15 @@ export class Employee {
   @Column()
   private lastName: string;
 
-  @Column()
-  private birthDate?: number;
+  @Column({
+    nullable: true
+  })
+  private birthDate?: Date;
 
-  @Column()
-  private hireDate?: number;
+  @Column({
+    nullable: true
+  })
+  private hireDate?: Date;
 
 }
 
