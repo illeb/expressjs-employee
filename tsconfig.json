@@ -16,7 +16,7 @@
     "paths": {
       "*": [
         "node_modules/*"
-      ]
+      ],
     }
   },
   "include": [
