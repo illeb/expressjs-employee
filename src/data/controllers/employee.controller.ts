@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { getCustomRepository } from 'typeorm';
 import { Employee, EmployeeRepository } from '..';
-import { GetEmployeeByNameQParams, GetEmployeeByIdParams, EmployeeBody, EmployeeDeleteParams } from '../../../src/routes/employee.routes';
+import { GetEmployeeByNameQParams, GetEmployeeByIdParams, EmployeeBody, EmployeeDeleteParams, EmployeeUpdateParams } from '../../../src/routes/employee.routes';
 
 const Errors = {
   CANNOT_FIND_EMPLOYEE: (_: TemplateStringsArray, id: number) => `Cannot find employee with the specified ID: ${id}`,
@@ -39,7 +39,7 @@ export class EmployeeController {
     response.status(200).send(employee);
   }
 
-  public async createEmployee(request: Request<unknown, unknown, EmployeeBody>, response: Response) {
+  public async createEmployee(request: Request<Record<string, unknown>, unknown, EmployeeBody>, response: Response) {
     const { employeeID, firstName, lastName, hireDate, birthDate } = request.body;
     const repository = getCustomRepository(EmployeeRepository);
     
@@ -55,7 +55,7 @@ export class EmployeeController {
     response.status(200).send();
   }
 
-  public async updateEmployee(request: Request<any, never, EmployeeBody>, response: Response) {
+  public async updateEmployee(request: Request<EmployeeUpdateParams, unknown, EmployeeBody>, response: Response) {
     const targetEmployeeID = request.params.employeeID;
     const { firstName, lastName, hireDate, birthDate } = request.body;
     const repository = getCustomRepository(EmployeeRepository);

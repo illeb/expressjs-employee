@@ -21,13 +21,13 @@ export class EmployeeRoutes implements IApplicationRoute {
     this.app.route(`/employee/:employeeID`).get<GetEmployeeByIdParams>(this.employeeController.getEmployeeById);
 
     // point 3
-    this.app.route(`/employee`).post(EmployeeValidators(), this.employeeController.createEmployee);
+    this.app.route(`/employee`).post<Record<string, unknown>, unknown, EmployeeBody>(EmployeeValidators(), this.employeeController.createEmployee);
 
     // point 4
-    this.app.route(`/employee/:employeeID`).put(EmployeeValidators(), this.employeeController.updateEmployee);
+    this.app.route(`/employee/:employeeID`).put<EmployeeUpdateParams, unknown, EmployeeBody>(EmployeeValidators(), this.employeeController.updateEmployee);
     
     // point 5
-    this.app.route(`/employee/:employeeID`).delete(this.employeeController.deleteEmployee);
+    this.app.route(`/employee/:employeeID`).delete<EmployeeDeleteParams>(this.employeeController.deleteEmployee);
 
     return this.app;
   }
