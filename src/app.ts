@@ -14,10 +14,7 @@ const port = 3000;
 app.use(express.json());
 app.use(cors());
 
-const routes = [
-  new RootRoutes(app),
-  new EmployeeRoutes(app)
-];
+const routes = [new RootRoutes(app), new EmployeeRoutes(app)];
 
 createConnection().then(async () => {
   await getCustomRepository(EmployeeRepository).save([
@@ -39,6 +36,6 @@ createConnection().then(async () => {
   ] as Employee[]);
 
   server.listen(port, () => {
-    routes.forEach(route => route.addRoutes());
+    routes.forEach((route) => route.addRoutes());
   });
 });

@@ -2,10 +2,9 @@ import { Column, Entity, EntityRepository, PrimaryGeneratedColumn, Repository } 
 
 @Entity()
 export class Employee {
-  
   @PrimaryGeneratedColumn()
   public id = -1;
-  
+
   @Column()
   public firstName: string;
 
@@ -13,12 +12,12 @@ export class Employee {
   public lastName: string;
 
   @Column({
-    nullable: true
+    nullable: true,
   })
   public birthDate?: Date;
 
   @Column({
-    nullable: true
+    nullable: true,
   })
   public hireDate?: Date;
 
@@ -37,9 +36,9 @@ export class EmployeeRepository extends Repository<Employee> {
     const loweredFirstName = firstName.toLowerCase();
     const loweredLastName = lastName.toLowerCase();
 
-    return this.createQueryBuilder("employee")
+    return this.createQueryBuilder('employee')
       .where('LOWER(employee.firstName) = :loweredFirstName', { loweredFirstName })
-       .andWhere('LOWER(employee.lastName) = :loweredLastName', { loweredLastName })
+      .andWhere('LOWER(employee.lastName) = :loweredLastName', { loweredLastName })
       .getMany();
   }
 }

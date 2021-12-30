@@ -1,15 +1,20 @@
 import { Request, Response } from 'express';
 import { getCustomRepository } from 'typeorm';
 import { Employee, EmployeeRepository } from '..';
-import { GetEmployeeByNameQParams, GetEmployeeByIdParams, EmployeeBody, EmployeeDeleteParams, EmployeeUpdateParams } from '../../../src/routes/employee.routes';
+import {
+  GetEmployeeByNameQParams,
+  GetEmployeeByIdParams,
+  EmployeeBody,
+  EmployeeDeleteParams,
+  EmployeeUpdateParams,
+} from '../../../src/routes/employee.routes';
 
 const Errors = {
   CANNOT_FIND_EMPLOYEE: (_: TemplateStringsArray, id: number) => `Cannot find employee with the specified ID: ${id}`,
-  EMPLOYEE_ALREADY_EXIST: (_: TemplateStringsArray, id: number) => `Employee already exist with the given ID: ${id}`
+  EMPLOYEE_ALREADY_EXIST: (_: TemplateStringsArray, id: number) => `Employee already exist with the given ID: ${id}`,
 };
 
 export class EmployeeController {
-
   public async getAllEmployees(_: Request, response: Response) {
     const repository = getCustomRepository(EmployeeRepository);
 
@@ -18,12 +23,15 @@ export class EmployeeController {
     response.status(200).send(employees);
   }
 
-  public async searchEmployeesByName(request: Request<unknown, unknown, unknown, GetEmployeeByNameQParams>, response: Response) {
+  public async searchEmployeesByName(
+    request: Request<unknown, unknown, unknown, GetEmployeeByNameQParams>,
+    response: Response,
+  ) {
     const { firstName, lastName } = request.query;
     const repository = getCustomRepository(EmployeeRepository);
 
     const employees = await repository.findByName(firstName, lastName);
-    
+
     response.status(200).send(employees);
   }
 
@@ -42,7 +50,7 @@ export class EmployeeController {
   public async createEmployee(request: Request<Record<string, unknown>, unknown, EmployeeBody>, response: Response) {
     const { employeeID, firstName, lastName, hireDate, birthDate } = request.body;
     const repository = getCustomRepository(EmployeeRepository);
-    
+
     const employeeExists = (await repository.findOne(employeeID)) != null;
     if (employeeExists) {
       response.status(403).send(Errors.EMPLOYEE_ALREADY_EXIST`${employeeID}`);
@@ -51,7 +59,7 @@ export class EmployeeController {
 
     const newEmployee = new Employee(employeeID, firstName, lastName, birthDate, hireDate);
     await repository.save(newEmployee);
-    
+
     response.status(200).send();
   }
 
@@ -59,7 +67,7 @@ export class EmployeeController {
     const targetEmployeeID = request.params.employeeID;
     const { firstName, lastName, hireDate, birthDate } = request.body;
     const repository = getCustomRepository(EmployeeRepository);
-    
+
     const employeeExists = (await repository.findOne(targetEmployeeID)) != null;
     if (!employeeExists) {
       response.status(404).send(Errors.CANNOT_FIND_EMPLOYEE`${targetEmployeeID}`);
@@ -68,7 +76,7 @@ export class EmployeeController {
 
     const updatedEmployee = new Employee(targetEmployeeID, firstName, lastName, birthDate, hireDate);
     await repository.update(targetEmployeeID, updatedEmployee);
-    
+
     response.status(200).send();
   }
 
@@ -82,8 +90,8 @@ export class EmployeeController {
       return;
     }
 
-    await repository.delete(targetEmployeeID)
-        
+    await repository.delete(targetEmployeeID);
+
     response.status(200).send();
   }
 }

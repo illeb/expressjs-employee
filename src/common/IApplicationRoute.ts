@@ -4,7 +4,7 @@ import { Application as ExpressApplication } from 'express';
  * Represents a single, generic route
  */
 export interface IApplicationRoute {
-    app: ExpressApplication;
+  app: ExpressApplication;
 
-    addRoutes(): ExpressApplication;
+  addRoutes(): ExpressApplication;
 }
