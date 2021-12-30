@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
+import { EmployeeServer } from '../../app';
 
 const Errors = {
   NOT_AUTHORIZED: 'NOT_AUTHORIZED'
@@ -12,7 +13,7 @@ const CheckToken = async (request: Request<unknown, unknown, unknown, unknown>, 
     return response.status(401).send(Errors.NOT_AUTHORIZED);
   }
   try {
-    jwt.verify(token, 'PRIVATE_KEY');
+    jwt.verify(token, EmployeeServer.jwt_key);
   } catch (err) {
     return response.status(401).send(Errors.NOT_AUTHORIZED);
   }

@@ -13,7 +13,7 @@
     "typeorm": "^0.2.41"
   },
   "scripts": {
-    "start": "ts-node --type-check src/app.ts",
+    "start": "ts-node --type-check src/app.ts JWT_KEY:PRIVATE_KEY",
     "debug": "export DEBUG=* && npm run start",
     "test": "jest",
     "lint": "eslint . --ext .ts",

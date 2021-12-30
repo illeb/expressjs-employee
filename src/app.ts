@@ -8,7 +8,10 @@ import { EmployeeRoutes, RootRoutes } from '../src/routes/index';
 import { IApplicationRoute } from './common/IApplicationRoute';
 import { AuthRoutes } from './routes/auth/auth.routes';
 
-export class Server {
+export class EmployeeServer {
+  // this should be built in a more appropriate manner
+  public static jwt_key = process.argv[2]?.split(':')[1] ?? 'PRIVATE_KEY';
+
   app: express.Application;
   server: http.Server;
   port = 3000;
@@ -33,5 +36,5 @@ export class Server {
   }
 }
 
-const server = new Server();
+const server = new EmployeeServer();
 createConnection().then(() => server.startServer());
