@@ -13,7 +13,7 @@
     "typeorm": "^0.2.41"
   },
   "scripts": {
-    "first_start": "ts-node initializeDB.ts && yarn start",
+    "first_start": "ts-node initializeDB.ts && npm run start",
     "start": "ts-node --type-check src/app.ts JWT_KEY:PRIVATE_KEY",
     "test": "jest",
     "lint": "eslint . --ext .ts",
