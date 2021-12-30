@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { body, param, validationResult, query } from 'express-validator';
-import { EmployeeBody, GetEmployeeByNameQParams } from './employee.routes';
+import { EmployeeBody } from './employee.routes';
 
 // approach inspired by https://stackoverflow.com/a/61268141/1306679
 const employeeValidator = [
