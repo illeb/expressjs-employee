@@ -1,7 +1,7 @@
 import { IApplicationRoute } from '../../common/IApplicationRoute';
 import { Application } from 'express';
 import { EmployeeController } from '../controllers/employee.controller';
-import { EmployeeValidators } from './employee.validator';
+import { employeeValidator, searchEmployeesByNameValidator } from './employee.validator';
 import { CheckToken } from '../../common/middlewares/authentication';
 
 export class EmployeeRoutes implements IApplicationRoute {
@@ -25,8 +25,9 @@ export class EmployeeRoutes implements IApplicationRoute {
     // point 2
     this.app
       .route(`/employee`)
-      .get<unknown, unknown, unknown, GetEmployeeByNameQParams>(
+      .get(
         CheckToken,
+        searchEmployeesByNameValidator,
         this.employeeController.searchEmployeesByName,
       );
     this.app
@@ -41,7 +42,7 @@ export class EmployeeRoutes implements IApplicationRoute {
       .route(`/employee`)
       .post<Record<string, unknown>, unknown, EmployeeBody>(
         CheckToken,
-        EmployeeValidators(),
+        employeeValidator,
         this.employeeController.createEmployee,
       );
 
@@ -50,7 +51,7 @@ export class EmployeeRoutes implements IApplicationRoute {
       .route(`/employee/:employeeID`)
       .put<EmployeeUpdateParams, unknown, EmployeeBody>(
         CheckToken,
-        EmployeeValidators(),
+        employeeValidator,
         this.employeeController.updateEmployee,
       );
 
