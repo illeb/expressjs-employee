@@ -1,7 +1,8 @@
 import { IApplicationRoute } from '../../common/IApplicationRoute';
 import { Application } from 'express';
-import { EmployeeController } from '../../data/controllers/employee.controller';
+import { EmployeeController } from '../controllers/employee.controller';
 import { EmployeeValidators } from './employee.validator';
+import { CheckToken } from '../../common/middlewares/authentication';
 
 export class EmployeeRoutes implements IApplicationRoute {
   app: Application;
@@ -14,20 +15,32 @@ export class EmployeeRoutes implements IApplicationRoute {
 
   addRoutes(): Application {
     // point 1
-    this.app.route(`/employees`).get(this.employeeController.getAllEmployees);
+    this.app
+      .route(`/employees`)
+      .get(
+        CheckToken,
+        this.employeeController.getAllEmployees
+      );
 
     // point 2
     this.app
       .route(`/employee`)
-      .get<unknown, unknown, unknown, GetEmployeeByNameQParams>(this.employeeController.searchEmployeesByName);
+      .get<unknown, unknown, unknown, GetEmployeeByNameQParams>(
+        CheckToken,
+        this.employeeController.searchEmployeesByName,
+      );
     this.app
       .route(`/employee/:employeeID`)
-      .get<GetEmployeeByIdParams>(this.employeeController.getEmployeeById);
+      .get<GetEmployeeByIdParams>(
+        CheckToken,
+        this.employeeController.getEmployeeById
+      );
 
     // point 3
     this.app
       .route(`/employee`)
       .post<Record<string, unknown>, unknown, EmployeeBody>(
+        CheckToken,
         EmployeeValidators(),
         this.employeeController.createEmployee,
       );
@@ -36,14 +49,18 @@ export class EmployeeRoutes implements IApplicationRoute {
     this.app
       .route(`/employee/:employeeID`)
       .put<EmployeeUpdateParams, unknown, EmployeeBody>(
-        EmployeeValidators(), 
-        this.employeeController.updateEmployee
+        CheckToken,
+        EmployeeValidators(),
+        this.employeeController.updateEmployee,
       );
 
     // point 5
     this.app
       .route(`/employee/:employeeID`)
-      .delete<EmployeeDeleteParams>(this.employeeController.deleteEmployee);
+      .delete<EmployeeDeleteParams>(
+        CheckToken,
+        this.employeeController.deleteEmployee
+      );
 
     return this.app;
   }

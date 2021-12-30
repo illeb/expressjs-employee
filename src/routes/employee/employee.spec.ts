@@ -1,13 +1,13 @@
-import { Application } from '../src/app';
+// import { Application } from '../....//src/app';
 
-describe('application.ts', () => {
-  let application: Application;
+// describe('application.ts', () => {
+//   let application: Application;
 
-  beforeAll(() => {
-    application = new Application();
-  });
+//   beforeAll(() => {
+//     application = new Application();
+//   });
 
-  it('application should be defined', () => {
-    expect(application).toBeDefined();
-  });
-});
+//   it('application should be defined', () => {
+//     expect(application).toBeDefined();
+//   });
+// });

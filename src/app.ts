@@ -6,6 +6,7 @@ import cors from 'cors';
 
 import { EmployeeRoutes, RootRoutes } from '../src/routes/index';
 import { IApplicationRoute } from './common/IApplicationRoute';
+import { AuthRoutes } from './routes/auth/auth.routes';
 
 export class Server {
   app: express.Application;
@@ -17,7 +18,11 @@ export class Server {
     this.app = express();
     this.app.use(express.json());
     this.app.use(cors());
-    this.routes = [new RootRoutes(this.app), new EmployeeRoutes(this.app)];
+    this.routes = [
+      new RootRoutes(this.app),
+      new EmployeeRoutes(this.app),
+      new AuthRoutes(this.app)
+    ];
   }
 
   startServer() {
@@ -29,4 +34,4 @@ export class Server {
 }
 
 const server = new Server();
-createConnection().then(async () => server.startServer());
+createConnection().then(() => server.startServer());
