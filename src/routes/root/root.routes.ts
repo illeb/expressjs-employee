@@ -1,4 +1,4 @@
-import { IApplicationRoute } from '../common/IApplicationRoute';
+import { IApplicationRoute } from '../../common/IApplicationRoute';
 import { Application, Request, Response } from 'express';
 
 export class RootRoutes implements IApplicationRoute {

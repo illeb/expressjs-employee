@@ -1,11 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
-import { body, validationResult } from 'express-validator';
-import { EmployeeBody } from '../../src/routes/employee.routes';
+import { body, param, validationResult } from 'express-validator';
+import { EmployeeBody } from './employee.routes';
 
 // approach inspired by https://stackoverflow.com/a/61268141/1306679
 const EmployeeValidators = () => {
   return [
-    body('employeeID', 'Mandatory parameter is missing: employeeID').notEmpty(),
+    body('employeeID', 'Mandatory parameter is missing: employeeID').if(param('employeeID').isEmpty()).notEmpty(),
     body('firstName', 'Mandatory parameter is missing: firstName').notEmpty(),
     body('lastName', 'Mandatory parameter is missing: lastName').notEmpty(),
     body('birthDate')
@@ -19,7 +19,7 @@ const EmployeeValidators = () => {
           },
         ) => {
           // birtHdate and hireDate are optional, so the check will pass if one of two (or both) are nullish
-          return birthDate == null || hireDate == null || hireDate < birthDate;
+          return birthDate == null || hireDate == null || birthDate < hireDate;
         },
       )
       .withMessage('HireDate cannot be before BirthDate'),

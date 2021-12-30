@@ -7,7 +7,7 @@ import {
   EmployeeBody,
   EmployeeDeleteParams,
   EmployeeUpdateParams,
-} from '../../../src/routes/employee.routes';
+} from '../../routes/employee/employee.routes';
 
 const Errors = {
   CANNOT_FIND_EMPLOYEE: (_: TemplateStringsArray, id: number) => `Cannot find employee with the specified ID: ${id}`,

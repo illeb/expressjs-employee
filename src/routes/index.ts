@@ -1,4 +1,4 @@
-import { EmployeeRoutes } from './employee.routes';
-import { RootRoutes } from './root.routes';
+import { EmployeeRoutes } from './employee/employee.routes';
+import { RootRoutes } from './root/root.routes';
 
 export { RootRoutes, EmployeeRoutes };

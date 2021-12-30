@@ -1,7 +1,7 @@
-import { IApplicationRoute } from '../common/IApplicationRoute';
+import { IApplicationRoute } from '../../common/IApplicationRoute';
 import { Application } from 'express';
-import { EmployeeController } from '../data/controllers/employee.controller';
-import { EmployeeValidators } from '../../src/common/employeee.validator';
+import { EmployeeController } from '../../data/controllers/employee.controller';
+import { EmployeeValidators } from './employee.validator';
 
 export class EmployeeRoutes implements IApplicationRoute {
   app: Application;
