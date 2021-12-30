@@ -14,12 +14,7 @@ export class AuthRoutes implements IApplicationRoute {
 
   addRoutes(): Application {
     // point 3
-    this.app
-      .route(`/login`)
-      .post(
-        AuthValidator(),
-        this.authController.checkLogin,
-      );
+    this.app.route(`/login`).post(AuthValidator(), this.authController.checkLogin);
 
     return this.app;
   }

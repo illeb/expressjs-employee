@@ -3,11 +3,15 @@ import jwt from 'jsonwebtoken';
 import { EmployeeServer } from '../../app';
 
 const Errors = {
-  NOT_AUTHORIZED: 'NOT_AUTHORIZED'
-}
+  NOT_AUTHORIZED: 'NOT_AUTHORIZED',
+};
 
-const CheckToken = async (request: Request<unknown, unknown, unknown, unknown>, response: Response, next: NextFunction) => {
-  const token = request.headers["authorization"]?.toString();
+const CheckToken = async (
+  request: Request<unknown, unknown, unknown, unknown>,
+  response: Response,
+  next: NextFunction,
+) => {
+  const token = request.headers['authorization']?.toString();
 
   if (!token) {
     return response.status(401).send(Errors.NOT_AUTHORIZED);
