@@ -27,9 +27,12 @@ export class Employee {
 @EntityRepository(Employee)
 export class EmployeeRepository extends Repository<Employee> {
   findByName(firstName: string, lastName: string) {
+    const loweredFirstName = firstName.toLowerCase();
+    const loweredLastName = lastName.toLowerCase();
+
     return this.createQueryBuilder("employee")
-      .where('employee.firstName = :firstName', { firstName })
-      .andWhere('user.lastName = :lastName', {lastName})
+      .where('LOWER(employee.firstName) = :loweredFirstName', { loweredFirstName })
+       .andWhere('LOWER(employee.lastName) = :loweredLastName', { loweredLastName })
       .getMany();
   }
 }

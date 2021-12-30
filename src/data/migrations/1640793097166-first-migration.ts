@@ -1,5 +1,4 @@
-import { MigrationInterface, QueryRunner, getCustomRepository } from "typeorm";
-import { Employee, EmployeeRepository } from "..";
+import { MigrationInterface, QueryRunner } from "typeorm";
 
 export class firstMigration1640793097166 implements MigrationInterface {
   name = 'firstMigration1640793097166'
