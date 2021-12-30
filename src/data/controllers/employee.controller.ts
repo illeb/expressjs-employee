@@ -6,9 +6,10 @@ export class EmployeeController {
 
   public async getAllEmployees(_: Request, response: Response) {
     const repository = getCustomRepository(EmployeeRepository);
-    return repository.find()
-      .then((employee) => response.status(200).send(employee))
-      .catch((error) => response.status(500).send({error: error}));
+
+    const employees = await repository.find();
+
+    response.status(200).send(employees);
   }
 
   public async searchEmployeesByName(request: Request<never, never, never, GetEmployeeByNameQParams>, response: Response) {
@@ -24,55 +25,90 @@ export class EmployeeController {
     const { employeeID } = request.params;
     const repository = getCustomRepository(EmployeeRepository);
 
-    const employees = await repository.findByIds([employeeID]);
-    if(employees.length)
-      response.status(200).send(employees);
-    else
+    const employee = await repository.findOne(employeeID);
+    if (employee == null) {
       response.status(404).send('Cannot find employee with the specified ID');
+      return;
+    }
+    response.status(200).send(employee);
   }
 
-  public async createEmployee(request: Request<never, never, Employee>, response: Response) {
-    const { id, firstName, lastName, hireDate, birthDate } = request.body;
+  public async createEmployee(request: Request<never, never, EmployeeBody>, response: Response) {
+    const { employeeID, firstName, lastName, hireDate, birthDate } = request.body;
     const repository = getCustomRepository(EmployeeRepository);
 
-    if (id == null || firstName == null || lastName) {
+    if (employeeID == null || firstName == null || lastName == null) {
       response.status(400).send(`Requested parameters are missing`);
-    }
-    if (hireDate != null && birthDate != null && birthDate > hireDate) {
-      
+      return;
     }
 
-    const employees = await repository.save(employee);
+    if (hireDate != null && birthDate != null && birthDate > hireDate) {
+      response.status(400).send('BirthDate must be lower than hireDate')
+      return;
+    }
+    
+    const employeeExists = (await repository.findOne(employeeID)) != null;
+    if (employeeExists) {
+      response.status(403).send('Employee already exist with the given ID');
+      return;
+    }
+
+    const newEmployee = new Employee(employeeID, firstName, lastName, birthDate, hireDate);
+    await repository.save(newEmployee);
+    
+    response.status(200).send();
+  }
+
+  public async updateEmployee(request: Request<EmployeeUpdateParams, never, EmployeeBody>, response: Response) {
+    const targetEmployeeID = request.params.employeeID;
+    const { firstName, lastName, hireDate, birthDate } = request.body;
+    const repository = getCustomRepository(EmployeeRepository);
+    
+    const employeeExists = (await repository.findOne(targetEmployeeID)) != null;
+    if (!employeeExists) {
+      response.status(404).send('Cannot find employee with the specified ID');
+      return;
+    }
+
+    if (targetEmployeeID == null || firstName == null || lastName == null) {
+      response.status(400).send(`Requested parameters are missing`);
+      return;
+    }
+
+    if (hireDate != null && birthDate != null && birthDate > hireDate) {
+      response.status(400).send('BirthDate must be lower than hireDate')
+      return;
+    }
+
+    const updatedEmployee = new Employee(targetEmployeeID, firstName, lastName, birthDate, hireDate);
+    await repository.update(targetEmployeeID, updatedEmployee);
+    
+    response.status(200).send();
+  }
+
+  public async deleteEmployee(request: Request<never, never, never, GetEmployeeByNameQParams>, response: Response) {
+    const { firstName, lastName } = request.query;
+    const repository = getCustomRepository(EmployeeRepository);
+
+    const employees = await repository.findByName(firstName, lastName);
     
     response.status(200).send(employees);
   }
-
-  // public async updateEmployee(request: Request<never, never, GetEmployeeByNameQParams>, response: Response) {
-  //   // request.body
-  //   const repository = getCustomRepository(EmployeeRepository);
-
-  //   const employees = await repository.findByName(firstName, lastName);
-    
-  //   response.status(200).send(employees);
-  //     // .catch((error) => response.status(500).send({error: error}));
-  // }
-
-  // public async deleteEmployee(request: Request<never, never, never, GetEmployeeByNameQParams>, response: Response) {
-  //   const { firstName, lastName } = request.query;
-  //   const repository = getCustomRepository(EmployeeRepository);
-
-  //   const employees = await repository.findByName(firstName, lastName);
-    
-  //   response.status(200).send(employees);
-  //     // .catch((error) => response.status(500).send({error: error}));
-  // }
 }
 
 interface GetEmployeeByIdParams {
   employeeID: number;
 }
 
-interface CreateEmployeeBody {
+interface EmployeeBody {
+  employeeID: number;
+  firstName: string;
+  lastName: string;
+  birthDate?: Date;
+  hireDate?: Date;
+}
+
+interface EmployeeUpdateParams {
   employeeID: number;
 }
 

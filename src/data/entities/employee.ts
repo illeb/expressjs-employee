@@ -22,6 +22,13 @@ export class Employee {
   })
   public hireDate?: Date;
 
+  constructor(id: number, firstName: string, lastName: string, birthDate?: Date, hireDate?: Date) {
+    this.id = id;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.birthDate = birthDate;
+    this.hireDate = hireDate;
+  }
 }
 
 @EntityRepository(Employee)
