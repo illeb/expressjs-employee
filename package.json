@@ -13,8 +13,8 @@
     "typeorm": "^0.2.41"
   },
   "scripts": {
+    "first_start": "ts-node initializeDB.ts && yarn start",
     "start": "ts-node --type-check src/app.ts JWT_KEY:PRIVATE_KEY",
-    "debug": "export DEBUG=* && npm run start",
     "test": "jest",
     "lint": "eslint . --ext .ts",
     "migrations:create": "ts-node ./node_modules/.bin/typeorm migration:create",
