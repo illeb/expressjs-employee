@@ -32,6 +32,7 @@ export class EmployeeController {
 
     const employees = await repository.findByName(firstName, lastName);
 
+    // we return an array, because we need to manage homonyms
     response.status(200).send(employees);
   }
 
